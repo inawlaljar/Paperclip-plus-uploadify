@@ -1,0 +1,29 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+  <head>
+    <title><%= h(yield(:title) || "Untitled") %></title>
+    <%= stylesheet_link_tag "uploadify"  %>
+<%= javascript_include_tag "uploadify/swfobject", "uploadify/jquery-1.4.2.min.js", "uploadify/jquery.uploadify.v2.1.4.min.js" %>
+
+
+  </script>
+    <%= yield(:head) %>
+    <%= csrf_meta_tags %>
+  </head>
+  <body>
+    <div id="container">
+      <%- flash.each do |name, msg| -%>
+        <%= content_tag :div, msg, :id => "flash_#{name}" %>
+      <%- end -%>
+      
+      <%- if show_title? -%>
+        <h1><%=h yield(:title) %></h1>
+      <%- end -%>
+      
+      <%= yield %>
+    </div>
+  </body>
+</html>
+
+

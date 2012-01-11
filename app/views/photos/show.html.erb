@@ -1,0 +1,15 @@
+<% title 'my photos' %>
+
+<%= image_tag @photo.data.url(:small) %>
+
+<%= simple_format h(@photo.description) %>
+
+<p>
+  <strong>Description:</strong>
+  <%= @photo.description %>
+</p>
+<p>
+  <%= link_to "Edit", edit_photo_path(@photo) %> |
+  <%= link_to "Destroy", @photo, :confirm => 'Are you sure?', :method => :delete %> |
+  <%= link_to "View All", photos_path %>
+</p>

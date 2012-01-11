@@ -1,0 +1,14 @@
+<% title "Albums" %>
+
+<% for album in @albums %>
+  <div class="album">
+    <h3><%= link_to h(album.name), album %></h3>
+    <div class="actions">
+      <%= album.name %>
+      <%= link_to "Edit", edit_album_path(album) %> |
+      <%= link_to "Destroy", album, :confirm => 'Are you sure?', :method => :delete %>
+    </div>
+  </div>
+<% end %>
+
+<p><%= link_to "New Album", new_album_path %></p>

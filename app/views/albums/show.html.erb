@@ -1,0 +1,103 @@
+<script type="text/javascript">
+
+ $(function() {
+      <% key = Rails.application.config.session_options[:key] %>
+      var uploadify_script_data = {};
+      var csrf_param = $('meta[name=csrf-param]').attr('content');
+      var csrf_token = $('meta[name=csrf-token]').attr('content');
+      uploadify_script_data[csrf_param] = encodeURI(encodeURIComponent(csrf_token));
+      uploadify_script_data['<%= key %>'] = '<%= cookies[key] %>';
+      uploadify_script_data['attachable_id'] 	= '<%= @album.id %>';
+      uploadify_script_data['parent'] 	= 'Album';
+/*
+    $('#photo_data').click(function(event){ 
+        event.preventDefault();
+    }); 
+*/
+    $('#photo_data').uploadify({
+        'uploader'    : '/assets/uploadify/uploadify.swf',
+        'cancelImg'   : '/assets/uploadify/cancel.png',
+        'script'      : '/assets/uploadify/uploadify.php',
+        'folder'      : '/public/uploads',
+        'scriptData'  : uploadify_script_data,
+        'removeCompleted' : false,
+        'multi'       : true,
+        'onAllComplete' : function(event,data) {
+//                            document.getElementByID('new_photo').submit();
+                          },
+        'onComplete'  : function(event, ID, fileObj, doc, data) {
+                          alert(fileObj.filePath);
+                        },                          
+        'onError' : function (event, id, fileObj, errorObj) {
+          alert("error: " + errorObj.info);
+        }
+        /*'scriptData'  : {
+            '_http_accept'  : 'application/javascript',
+            'format'        : 'json',
+            '_method'       : 'post',
+            'attachable_id' : '<%= @album.id %>'
+          }*/
+    });
+/*
+    $('#photo_submit').click(function(event){ 
+            event.preventDefault(); 
+            $('#photo_data').uploadifyUpload(); 
+        });*/
+ }); 
+
+/*
+    $(document).ready(function() {
+      <% key = Rails.application.config.session_options[:key] %>
+      var uploadify_script_data = {};
+      var csrf_param = $('meta[name=csrf-param]').attr('content');
+      var csrf_token = $('meta[name=csrf-token]').attr('content');
+      uploadify_script_data[csrf_param] = encodeURI(encodeURIComponent(csrf_token));
+      uploadify_script_data['<%= key %>'] = '<%= cookies[key] %>';
+      uploadify_script_data['attachable_id'] 	= '<%= @album.id %>';
+      uploadify_script_data['parent'] 	= 'Album';
+      } 
+
+      $('#photo_data').uploadify({
+        'uploader'        : '/assets/uploadify.swf',
+        'script'          : '/assets/uploadify',
+        'cancelImg'       : '/assets/cancel.png',
+        'folder'          : '/public/campaign',
+        'buttonText'      : 'Upload Files',
+        'multi'           : true,
+        'removeCompleted' : false,
+        'scriptData'      : uploadify_script_data,
+        'onError'         : function (event, id, fileObj, errorObj) {
+          alert("error: " + errorObj.info);
+        },
+        'onComplete'      : function(event, ID, fileObj, doc, data) {
+          alert(fileObj.filePath);
+        }
+      });
+    });
+ 
+jQuery.noConflict();
+ 
+jQuery().ready(function() { 
+   jQuery('#photo_data').click(function(event){ 
+      event.preventDefault(); 
+    });    
+    jQuery('#photo_submit').click(function(event){ 
+      event.preventDefault(); 
+      jQuery('#photo_data').uploadifyUpload(); 
+    }); 
+  }); 
+  */
+</script>   
+
+<%= form_for @photo, :html => { :multipart => true } do |f| %>
+	<div class="image-uploader">
+		<%= f.hidden_field :attachable_id  %>
+		<%= f.label :description  %>
+		<%= f.text_field :description  %></br>
+		<%= f.file_field :data  %></br>
+		<%= f.submit "Upload Images", :id => 'photo_submit', :onclick=>"javascript:$('#photo_data').uploadifyUpload();"%>
+	</div>
+<% end %>
+
+
+

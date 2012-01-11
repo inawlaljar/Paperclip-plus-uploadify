@@ -1,0 +1,28 @@
+
+<%= javascript_include_tag "swfobject.js", "jquery-1.4.2.min.js","jquery.uploadify.v2.1.4.min.js" %>
+<script type="text/javascript" charset="utf-8">
+$(document).ready(function() {
+  <% key = Rails.application.config.session_options[:key] %>
+  var uploadify_script_data = {};
+  var csrf_param = $('meta[name=csrf-param]').attr('content');
+  var csrf_token = $('meta[name=csrf-token]').attr('content');
+  uploadify_script_data[csrf_param] = encodeURI(encodeURIComponent(csrf_token));
+  uploadify_script_data['<%= key %>'] = '<%= cookies[key] %>';
+
+  $('#uploadify').uploadify({
+    uploader        : '/assets/uploadify/uploadify.swf %>' ,
+    script          : '/assets/uploadify/uploadify.php',
+    cancelImg       : '/assets/uploadify//cancel.png',
+    auto            : true,
+    multi           : true,
+    removeCompleted : true,
+    scriptData      : uploadify_script_data,
+    onComplete      : function(event, ID, fileObj, doc, data) {
+    }
+  });
+});
+
+
+</script>
+
+
